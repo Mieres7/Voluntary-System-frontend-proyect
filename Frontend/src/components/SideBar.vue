@@ -3,45 +3,65 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "SideBar",
   components: {},
+  methods: {
+    progress: function () {
+      const d = document;
+      const $btn = d.getElementById("btn"),
+        $snackbar = d.querySelector(".snackbar");
+
+      $btn.addEventListener("click", function () {
+        $snackbar.classList.toggle("active");
+      });
+    },
+  },
 });
 </script>
 
 <template>
+  <div class="snackbar">
+    <div class="progress"></div>
+    ¡Esta función aún está en desarrollo!
+  </div>
   <div id="nav-bar">
     <input id="nav-toggle" type="checkbox" />
     <div id="nav-header">
-      <a id="nav-title" href="https://codepen.io" target="_blank"
-        >C<i class="fab fa-codepen"></i>DEPEN</a
-      >
-      <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+      <a id="nav-title" href="https://codepen.io" target="_blank">
+        C <i class="fab fa-codepen"></i>DEPEN
+      </a>
+      <!-- <p>Hola</p> -->
+      <label for="nav-toggle">
+        <span id="nav-toggle-burger"></span>
+      </label>
       <hr />
     </div>
     <div id="nav-content">
-      <div class="nav-button">
-        <i class="fas fa-palette"></i><span>Emergencias</span>
+      <div class="nav-button" id="btn" @click="progress">
+        <i class="fas fa-regular fa-triangle-exclamation"></i
+        ><span>Emergencias</span>
       </div>
       <div class="nav-button">
-        <i class="fas fa-images"></i><span>Tareas</span>
+        <i class="fas fa-solid fa-list-check"></i><span>Tareas</span>
       </div>
       <div class="nav-button">
-        <i class="fas fa-thumbtack"></i><span>Vista interactiva</span>
+        <i class="fas fa-chart-line"></i><span>Ranking</span>
       </div>
 
       <div class="nav-button">
-        <i class="fas fa-heart"></i><span>Following</span>
+        <i class="fas fa-solid fa-user-plus"></i
+        ><span>Registro Voluntarios</span>
       </div>
       <div class="nav-button">
-        <i class="fas fa-chart-line"></i><span>Trending</span>
+        <i class="fas fa-regular fa-clipboard"></i><span>Mis Tareas</span>
       </div>
       <div class="nav-button">
-        <i class="fas fa-fire"></i><span>Challenges</span>
+        <i class="fas fa-fire"></i><span>Vista Interativa</span>
       </div>
-      <div class="nav-button">
+      <!-- <div class="nav-button">
         <i class="fas fa-magic"></i><span>Spark</span>
       </div>
       <div class="nav-button">
         <i class="fas fa-gem"></i><span>Codepen Pro</span>
-      </div>
+      </div> -->
       <div id="nav-content-highlight"></div>
     </div>
   </div>
@@ -72,11 +92,12 @@ body {
 }
 #nav-toggle:checked ~ #nav-header #nav-toggle-burger {
   background: #f5f6fa;
+  background: black;
 }
 #nav-toggle:checked ~ #nav-header #nav-toggle-burger:before,
 #nav-toggle:checked ~ #nav-header #nav-toggle-burger::after {
   width: 16px;
-  background: #8392a5;
+  background: #212223;
   transform: translate(0, 0) rotate(0deg);
 }
 #nav-toggle:checked ~ #nav-content .nav-button span {
@@ -89,18 +110,20 @@ body {
 
 #nav-bar {
   position: absolute;
-  left: 1vw;
-  top: 1vw;
-  height: calc(100% - 2.1vw);
-  background: #18283b;
+  height: 87.9%;
+  left: 20px;
+  background: #fff;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
-  color: #f5f6fa;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #fff;
+  font-family: "Montserrat";
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
   overflow: hidden;
   user-select: none;
   z-index: 1;
+  transform: translateY(1px);
 }
 #nav-bar hr {
   margin: 0;
@@ -114,6 +137,10 @@ body {
   color: inherit;
   text-decoration: inherit;
 }
+#nav-bar p {
+  color: inherit;
+  text-decoration: inherit;
+}
 #nav-bar input[type="checkbox"] {
   display: none;
 }
@@ -124,7 +151,8 @@ body {
   left: 16px;
   width: calc(256px - 16px);
   min-height: 80px;
-  background: #18283b;
+  /* background: #c89d72; */
+  color: #212223;
   border-radius: 16px;
   z-index: 2;
   display: flex;
@@ -156,7 +184,7 @@ label[for="nav-toggle"] {
   position: relative;
   width: 16px;
   height: 2px;
-  background: #18283b;
+  /* background: #c89d72; */
   border-radius: 99px;
   transition: background 0.2s;
 }
@@ -168,6 +196,8 @@ label[for="nav-toggle"] {
   width: 10px;
   height: 2px;
   background: #f5f6fa;
+  background: black;
+  background: #11303d;
   border-radius: 99px;
   transform: translate(2px, 8px) rotate(30deg);
   transition: 0.2s;
@@ -183,8 +213,8 @@ label[for="nav-toggle"] {
   position: relative;
   flex: 1;
   width: 256px;
-  background: #18283b;
-  box-shadow: 0 0 0 16px #18283b;
+  /* background: #c89d72; */
+  /* box-shadow: 0 0 0 16px #c89d72; */
   direction: rtl;
   overflow-x: hidden;
   transition: width 0.2s;
@@ -204,7 +234,8 @@ label[for="nav-toggle"] {
   top: -70px;
   width: calc(100% - 16px);
   height: 54px;
-  background: rgb(241, 236, 236);
+
+  background: #11303d;
   background-attachment: fixed;
   border-radius: 0 16px 16px 0;
   transition: top 0.2s;
@@ -218,11 +249,11 @@ label[for="nav-toggle"] {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  box-shadow: -16px 16px rgb(241, 236, 236);
+  box-shadow: -16px 16px #11303d;
 }
 #nav-content-highlight:after {
   top: 100%;
-  box-shadow: -16px -16px rgb(241, 236, 236);
+  box-shadow: -16px -16px #11303d;
 }
 
 .nav-button {
@@ -231,7 +262,9 @@ label[for="nav-toggle"] {
   height: 54px;
   display: flex;
   align-items: center;
-  color: #8392a5;
+  color: #3c3e3f;
+  /* color: #11303d;
+  color: black; */
   direction: ltr;
   cursor: pointer;
   z-index: 1;
@@ -244,49 +277,49 @@ label[for="nav-toggle"] {
   transition: min-width 0.2s;
 }
 .nav-button:nth-of-type(1):hover {
-  color: #18283b;
+  color: #fff;
 }
 .nav-button:nth-of-type(1):hover ~ #nav-content-highlight {
   top: 16px;
 }
 .nav-button:nth-of-type(2):hover {
-  color: #18283b;
+  color: #fff;
 }
 .nav-button:nth-of-type(2):hover ~ #nav-content-highlight {
   top: 70px;
 }
 .nav-button:nth-of-type(3):hover {
-  color: #18283b;
+  color: #fff;
 }
 .nav-button:nth-of-type(3):hover ~ #nav-content-highlight {
   top: 124px;
 }
 .nav-button:nth-of-type(4):hover {
-  color: #18283b;
+  color: #fff;
 }
 .nav-button:nth-of-type(4):hover ~ #nav-content-highlight {
   top: 178px;
 }
 .nav-button:nth-of-type(5):hover {
-  color: #18283b;
+  color: #fff;
 }
 .nav-button:nth-of-type(5):hover ~ #nav-content-highlight {
   top: 232px;
 }
 .nav-button:nth-of-type(6):hover {
-  color: #18283b;
+  color: #fff;
 }
 .nav-button:nth-of-type(6):hover ~ #nav-content-highlight {
   top: 286px;
 }
 .nav-button:nth-of-type(7):hover {
-  color: #18283b;
+  color: #fff;
 }
 .nav-button:nth-of-type(7):hover ~ #nav-content-highlight {
   top: 340px;
 }
 .nav-button:nth-of-type(8):hover {
-  color: #18283b;
+  color: #fff;
 }
 .nav-button:nth-of-type(8):hover ~ #nav-content-highlight {
   top: 394px;
@@ -295,5 +328,44 @@ label[for="nav-toggle"] {
 #nav-bar .fas {
   min-width: 3rem;
   text-align: center;
+}
+
+/* snackbar */
+.snackbar {
+  background-color: #fff;
+  position: absolute;
+  z-index: 999;
+  border-radius: 10px;
+  padding: 20px 60px;
+  font-family: "Quicksand", sans-serif;
+  top: 18px;
+  box-shadow: 0px 5px 180x rgba(0, 0, 0, 0.2);
+  border-left: solid 6px #3ab164;
+  overflow: hidden;
+  transform: translateX(960px);
+  transform: translateY(-150px);
+}
+
+.snackbar.active {
+  transform: translate(0, 150px);
+}
+
+.progress {
+  width: 100%;
+  height: 5px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /* background: red; */
+}
+
+progress::before {
+  content: " ";
+  background-color: #3ab164;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 </style>
