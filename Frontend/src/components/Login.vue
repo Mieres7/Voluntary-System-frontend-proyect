@@ -6,8 +6,8 @@ export default defineComponent({
   components: {},
   data() {
     return {
-      nombre: "",
-      email: "",
+      firstName: "",
+      username: "",
       password: "",
     };
   },
@@ -37,14 +37,14 @@ export default defineComponent({
       });
     },
 
-    login: async () => {
+    login() {
       const auth = new AuthService();
-      await auth.login(this.email, this.password);
+      auth.login(this.username, this.password);
     },
 
-    register: async () => {
+    register() {
       const auth = new AuthService();
-      await auth.register(this.nombre, this.email, this.password);
+      auth.register(this.nombre, this.username, this.password);
     },
   },
 });
@@ -59,16 +59,12 @@ export default defineComponent({
           <h2>Crear una cuenta</h2>
           <form class="form">
             <label>
-              <i class="bx bx-user"></i>
-              <input
-                type="text"
-                placeholder="Nombre Completo"
-                v-model="nombre"
-              />
+              <i class="bx bxs-crown"></i>
+              <input type="text" placeholder="Nombre" v-model="firstName" />
             </label>
             <label>
-              <i class="bx bx-envelope"></i>
-              <input type="email" placeholder="Email" v-model="email" />
+              <i class="bx bx-user"></i>
+              <input type="email" placeholder="Username" v-model="username" />
             </label>
             <label>
               <i class="bx bx-lock-alt"></i>
@@ -109,7 +105,7 @@ export default defineComponent({
           <form class="form">
             <label>
               <i class="bx bx-envelope"></i>
-              <input type="email" placeholder="Email" v-model="email" />
+              <input type="email" placeholder="Username" v-model="username" />
             </label>
             <label>
               <i class="bx bx-lock-alt"></i>
@@ -174,6 +170,7 @@ body {
   background-color: #f8f8f8;
   border-radius: 20px;
 }
+
 .form-information-childs h1 {
   color: #333;
   font-size: 1rem;
@@ -196,9 +193,9 @@ body {
   padding: 15px;
   cursor: pointer;
   margin: 0 10px;
-  color: #d5a983;
+  color: #003366;
   transition: background-color 0.3s ease;
-  border: solid thin #d5a983;
+  border: solid thin #003366;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .hide {
@@ -207,7 +204,7 @@ body {
   transition: transform 2s ease;
 }
 .icons i:hover {
-  background-color: #d5a983;
+  background-color: #003366;
   color: #fff;
   transition: 0.5s ease;
 }
@@ -238,6 +235,7 @@ body {
 }
 .form input[type="submit"] {
   background-color: #d5a983;
+  background-color: #003366;
   color: #fff;
   border-radius: 20px;
   border: none;
@@ -249,7 +247,7 @@ body {
 }
 .form input[type="submit"]:hover {
   background-color: #fff;
-  color: #d5a983;
+  color: #003366;
   transition: 0.5s ease;
 }
 .form label:hover {
@@ -292,7 +290,7 @@ body {
   color: #333;
 }
 .regBtn:hover {
-  color: #d5a983;
+  color: #003366;
   transition: 0.1 ease;
 }
 </style>

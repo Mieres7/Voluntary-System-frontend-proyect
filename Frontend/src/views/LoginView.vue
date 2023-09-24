@@ -58,5 +58,7 @@ import Login from "../components/Login.vue";
 
 .effect {
   background-image: url("../views/icons/trees.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 </style>

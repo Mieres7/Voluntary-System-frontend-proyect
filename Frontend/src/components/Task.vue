@@ -6,17 +6,19 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container"></div>
+  <div class="task"></div>
 </template>
 
 <style scoped>
-.container {
-  width: 280px;
-  height: 280px;
-  background-color: rgb(171, 191, 171);
+.task {
+  width: 276px;
+  height: 199px;
+  /* background-color: #d3e3fd; */
+  /* background-color: #fff; */
+  background-color: #cecece;
   border-radius: 16px;
-  z-index: -1;
-  padding: 10px;
-  margin: 10px;
+  z-index: 0;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 </style>

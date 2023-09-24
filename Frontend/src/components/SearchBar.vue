@@ -16,29 +16,32 @@ export default defineComponent({
 .text {
   border: none;
   outline: none;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 16px;
   padding-left: 25px;
   width: 500px;
   background: #fff;
+  /* background: #c89d72;
+  background: #2a789a; */
 }
 
 .bar {
   display: flex;
   align-content: center;
   background: #fff;
+  /* background: #c89d72;
+  background: #2a789a; */
   padding: 15px 26px 15px 26px;
   border-radius: 30px;
   width: 500px;
   height: 20px;
   border: none;
-  /* transform: translateX(-10px); */
 }
 
 div:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  transform: translateY(-5%);
-  transition: 0.5s ease;
+  transform: translateY(-3%);
+  transition: 0.1s ease;
 }
 
 img {

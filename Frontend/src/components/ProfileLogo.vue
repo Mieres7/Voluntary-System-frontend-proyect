@@ -17,14 +17,15 @@ export default defineComponent({
 .profile-card {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100px;
+  justify-content: space-around;
+  width: 120px;
   height: 60px;
-  background-color: white;
+  background-color: #fff;
   border-radius: 16px;
   margin-right: 20px;
-  padding: 0px 20px 0px 20px;
-  font-size: 1rem;
-  font-family: "Montserrat", sans-serif;
+  padding: 0px 10px 0px 10px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: "Quicksand", sans-serif;
 }
 </style>
