@@ -6,11 +6,20 @@ export default defineComponent({
   methods: {
     progress: function () {
       const d = document;
-      const $btn = d.getElementById("btn"),
-        $snackbar = d.querySelector(".snackbar");
+      const $snackbar = d.querySelector(".snackbar"),
+        $progress = d.querySelector(".progress"),
+        $buttons = d.querySelectorAll(".btn");
 
-      $btn.addEventListener("click", function () {
-        $snackbar.classList.toggle("active");
+      $buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          $snackbar.classList.add("active");
+          $progress.classList.add("active");
+
+          setTimeout(() => {
+            $snackbar.classList.remove("active");
+            $progress.classList.remove("active");
+          }, 2500);
+        });
       });
     },
   },
@@ -35,22 +44,22 @@ export default defineComponent({
       <hr />
     </div>
     <div id="nav-content">
-      <div class="nav-button" id="btn" @click="progress">
+      <div class="nav-button btn" @click="progress">
         <i class="fas fa-regular fa-triangle-exclamation"></i
         ><span>Emergencias</span>
       </div>
       <div class="nav-button">
         <i class="fas fa-solid fa-list-check"></i><span>Tareas</span>
       </div>
-      <div class="nav-button">
+      <div class="nav-button btn" @click="progress">
         <i class="fas fa-chart-line"></i><span>Ranking</span>
       </div>
 
-      <div class="nav-button">
+      <div class="nav-button btn" @click="progress">
         <i class="fas fa-solid fa-user-plus"></i
         ><span>Registro Voluntarios</span>
       </div>
-      <div class="nav-button">
+      <div class="nav-button btn" @click="progress">
         <i class="fas fa-regular fa-clipboard"></i><span>Mis Tareas</span>
       </div>
       <div class="nav-button">
@@ -117,7 +126,6 @@ body {
   display: flex;
   flex-direction: column;
   color: #fff;
-  font-family: "Montserrat";
   font-family: "Quicksand", sans-serif;
   font-weight: 500;
   overflow: hidden;
@@ -151,7 +159,6 @@ body {
   left: 16px;
   width: calc(256px - 16px);
   min-height: 80px;
-  /* background: #c89d72; */
   color: #212223;
   border-radius: 16px;
   z-index: 2;
@@ -184,7 +191,6 @@ label[for="nav-toggle"] {
   position: relative;
   width: 16px;
   height: 2px;
-  /* background: #c89d72; */
   border-radius: 99px;
   transition: background 0.2s;
 }
@@ -213,8 +219,6 @@ label[for="nav-toggle"] {
   position: relative;
   flex: 1;
   width: 256px;
-  /* background: #c89d72; */
-  /* box-shadow: 0 0 0 16px #c89d72; */
   direction: rtl;
   overflow-x: hidden;
   transition: width 0.2s;
@@ -342,12 +346,13 @@ label[for="nav-toggle"] {
   box-shadow: 0px 5px 180x rgba(0, 0, 0, 0.2);
   border-left: solid 6px #3ab164;
   overflow: hidden;
-  transform: translateX(960px);
+  left: 795px;
   transform: translateY(-150px);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .snackbar.active {
-  transform: translate(0, 150px);
+  transform: translateY(0px);
 }
 
 .progress {
@@ -356,10 +361,9 @@ label[for="nav-toggle"] {
   position: absolute;
   left: 0;
   bottom: 0;
-  /* background: red; */
 }
 
-progress::before {
+.progress::before {
   content: " ";
   background-color: #3ab164;
   width: 100%;
@@ -367,5 +371,14 @@ progress::before {
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+.progress.active::before {
+  animation: snackbar 2.5s linear forwards;
+}
+@keyframes snackbar {
+  100% {
+    right: 100%;
+  }
 }
 </style>
