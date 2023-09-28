@@ -25,7 +25,7 @@ export default defineComponent({
   margin-right: 20px;
   padding: 0px 10px 0px 10px;
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 400;
   font-family: "Quicksand", sans-serif;
 }
 </style>
