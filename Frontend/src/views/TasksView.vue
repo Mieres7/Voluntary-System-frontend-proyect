@@ -24,9 +24,7 @@ import ProfileLogo from "../components/ProfileLogo.vue";
     <div class="sidebar-r">
       <i class="fa-solid fa-gear fa-xl" style="color: #cecece"></i>
     </div>
-    <div class="extra">
-      <!-- <i class="fa-solid fa-gear fa-xl"></i> -->
-    </div>
+    <div class="extra"></div>
   </div>
 </template>
 
@@ -34,13 +32,11 @@ import ProfileLogo from "../components/ProfileLogo.vue";
 .container {
   display: grid;
   grid-template-columns: 6.25% 90.9% 2.85%;
-  /* grid-template-columns: ; */
   grid-template-rows: 10vh 87.7vh 2.3vh;
   grid-template-areas:
     "logo profile profile"
     "sidebar-r cards   sidebar-l"
     "extra     extra   extra";
-  /* background-color: #11303d; */
   background-image: linear-gradient(150deg, #00a2bb, #205a72, #11303d);
 }
 

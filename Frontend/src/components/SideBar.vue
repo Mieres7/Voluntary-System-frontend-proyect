@@ -201,8 +201,6 @@ label[for="nav-toggle"] {
   top: -6px;
   width: 10px;
   height: 2px;
-  background: #f5f6fa;
-  background: black;
   background: #11303d;
   border-radius: 99px;
   transform: translate(2px, 8px) rotate(30deg);
