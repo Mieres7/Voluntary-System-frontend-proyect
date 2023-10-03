@@ -17,6 +17,7 @@ export default defineComponent({
   margin-right: 20px;
   font-family: "Quicksand", sans-serif;
   font-size: 15px;
+  cursor: pointer;
   /* background-color: #cecece; */
 }
 </style>

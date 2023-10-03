@@ -174,16 +174,16 @@ body {
 .form-information-childs h1 {
   color: #333;
   font-size: 1rem;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 .form-information-childs h2 {
   color: #333;
   font-size: 2rem;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 .form-information-childs p {
   color: #555;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 .icons {
   margin: 10px 0 25px 0;
@@ -228,7 +228,7 @@ body {
   outline: none;
   border-radius: 20px;
   color: #333;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 .form label i {
   color: #a7a7a7;
@@ -243,7 +243,7 @@ body {
   cursor: pointer;
   margin-top: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-family: "Montserrat", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 .form input[type="submit"]:hover {
   background-color: #fff;
@@ -261,7 +261,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-size: 15px;
 }
 .test p {
@@ -273,7 +273,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-size: 15px;
 }
 .test2 p {
@@ -286,7 +286,7 @@ body {
   font-size: inherit;
   cursor: pointer;
   text-decoration: underline;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Quicksand", sans-serif;
   color: #333;
 }
 .regBtn:hover {
