@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import TaskView from '../views/TasksView.vue'
+import interactiveView from '../views/InteractiveView.vue'
 
 
 const router = createRouter({
@@ -14,9 +15,14 @@ const router = createRouter({
     {
       path: '/task',
       name: 'task',
-     component: TaskView
+      component: TaskView
     },
-    
+    {
+      path: '/interactive',
+      name: 'interactive',
+      component: interactiveView
+    }
+     
   ]
 })
 

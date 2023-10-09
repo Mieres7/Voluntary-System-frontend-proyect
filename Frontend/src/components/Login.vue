@@ -1,18 +1,14 @@
 <script>
-import { defineComponent } from "vue";
+import { ref } from "vue";
 import AuthService from "../services/AuthService";
-export default defineComponent({
+export default {
   name: "Login",
-  components: {},
-  data() {
-    return {
-      firstName: "",
-      username: "",
-      password: "",
-    };
-  },
-  methods: {
-    change: function () {
+  setup() {
+    const username = ref(""),
+      password = ref(""),
+      first_name = ref("");
+
+    const change = () => {
       const d = document;
 
       const $login = d.querySelector(".login"),
@@ -35,19 +31,28 @@ export default defineComponent({
 
         $register.classList.add("hide");
       });
-    },
+    };
 
-    login() {
+    const login = () => {
       const auth = new AuthService();
-      auth.login(this.username, this.password);
-    },
+      auth.login(username, password);
+    };
 
-    register() {
+    const register = () => {
       const auth = new AuthService();
-      auth.register(this.nombre, this.username, this.password);
-    },
+      auth.register(first_name, username, password);
+    };
+
+    return {
+      change,
+      login,
+      register,
+      first_name,
+      username,
+      password,
+    };
   },
-});
+};
 </script>
 
 <template>
@@ -60,11 +65,11 @@ export default defineComponent({
           <form class="form">
             <label>
               <i class="bx bxs-crown"></i>
-              <input type="text" placeholder="Nombre" v-model="firstName" />
+              <input type="text" placeholder="Nombre" v-model="first_name" />
             </label>
             <label>
               <i class="bx bx-user"></i>
-              <input type="email" placeholder="Username" v-model="username" />
+              <input type="email" placeholder="Usuario" v-model="username" />
             </label>
             <label>
               <i class="bx bx-lock-alt"></i>
@@ -105,7 +110,7 @@ export default defineComponent({
           <form class="form">
             <label>
               <i class="bx bx-envelope"></i>
-              <input type="email" placeholder="Username" v-model="username" />
+              <input type="email" placeholder="Usuario" v-model="username" />
             </label>
             <label>
               <i class="bx bx-lock-alt"></i>

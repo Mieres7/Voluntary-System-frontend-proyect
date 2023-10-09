@@ -1,12 +1,11 @@
 <script>
-import { defineComponent } from "vue";
-export default defineComponent({
+export default {
   name: "ProfileLogo",
-});
+};
 </script>
 <template>
   <div class="profile-card">
-    Vicente
+    User
     <div class="profile-picture">
       <i class="fa-solid fa-user"></i>
     </div>
