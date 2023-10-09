@@ -1,10 +1,9 @@
 <script>
-import { defineComponent } from "vue";
-export default defineComponent({
+export default {
   name: "SideBar",
   components: {},
-  methods: {
-    progress: function () {
+  setup() {
+    const progress = () => {
       const d = document;
       const $snackbar = d.querySelector(".snackbar"),
         $progress = d.querySelector(".progress"),
@@ -21,9 +20,10 @@ export default defineComponent({
           }, 2500);
         });
       });
-    },
+    };
+    return { progress };
   },
-});
+};
 </script>
 
 <template>
@@ -37,7 +37,6 @@ export default defineComponent({
       <a id="nav-title" href="https://codepen.io" target="_blank">
         C <i class="fab fa-codepen"></i>DEPEN
       </a>
-      <!-- <p>Hola</p> -->
       <label for="nav-toggle">
         <span id="nav-toggle-burger"></span>
       </label>
@@ -65,12 +64,6 @@ export default defineComponent({
       <div class="nav-button">
         <i class="fas fa-fire"></i><span>Vista Interativa</span>
       </div>
-      <!-- <div class="nav-button">
-        <i class="fas fa-magic"></i><span>Spark</span>
-      </div>
-      <div class="nav-button">
-        <i class="fas fa-gem"></i><span>Codepen Pro</span>
-      </div> -->
       <div id="nav-content-highlight"></div>
     </div>
   </div>
@@ -109,6 +102,7 @@ body {
   background: #212223;
   transform: translate(0, 0) rotate(0deg);
 }
+
 #nav-toggle:checked ~ #nav-content .nav-button span {
   opacity: 0;
   transition: opacity 0.1s;
@@ -130,7 +124,7 @@ body {
   font-weight: 500;
   overflow: hidden;
   user-select: none;
-  z-index: 1;
+  z-index: 2;
   transform: translateY(1px);
 }
 #nav-bar hr {
@@ -336,7 +330,7 @@ label[for="nav-toggle"] {
 .snackbar {
   background-color: #fff;
   position: absolute;
-  z-index: 999;
+  z-index: 2;
   border-radius: 10px;
   padding: 20px 60px;
   font-family: "Quicksand", sans-serif;
