@@ -1,10 +1,12 @@
 <script>
 import axios from "axios";
 import { ref } from "vue";
-
+import Warning from "./Warning.vue";
+// import jwtDecode from "jwt-decode";
 export default {
   name: "AddTask",
-  setup() {
+  emits: ["confirm"],
+  setup(_, { emit }) {
     const d = document;
     const emergencys = ref([
         {
@@ -34,39 +36,34 @@ export default {
         {},
         {},
       ]);
-
     const task_name = ref(""),
       emergency = ref({}),
       requirementsSelected = ref([]),
       volunteers_required = ref(""),
       description_task = ref("");
-
     function showNewTask() {
       const $screen = d.querySelector(".screen"),
         $newtask = d.querySelector(".new-task");
-
       $screen.style.zIndex = "3";
       $newtask.style.opacity = "1";
     }
-
     function close() {
       const $screen = d.querySelector(".screen"),
         $newtask = d.querySelector(".new-task");
-
       $screen.style.zIndex = "-1";
       $newtask.style.opacity = "0";
     }
 
     function newTask() {
       const requirements = requirementsSelected.value;
-
       const temp = [];
       for (let i = 0; i < requirements.length; i++) {
         temp[i] = requirements[i];
       }
 
-      console.log(a);
-      const emergency_id = emergency.value.split(" ")[1];
+      const parts = emergency.value.split(": ");
+      const emergency_id = parts[1].split(" - ")[0];
+      console.log(emergency_id);
 
       const newTask = {
         task_name: this.task_name,
@@ -74,20 +71,44 @@ export default {
         requirements: temp,
         volunteers_required: this.volunteers_required,
         description: this.description_task,
-      };
+      }; // PREGUNTAR JWT TERMINAR DE MODIFICAR ERRORES Y CONECTAR, CREO QUE NO FALTA NADA MAS
 
-      console.log(newTask);
-      try {
-        const res = axios.post("http://localhost:8080/", newTask);
-      } catch (error) {
-        // console.log(error);
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        task.value.id_user = decodedToken.id;
+        axios
+          .post("http://localhost:8080/task", newTask)
+          .then(() => {
+            // emit("confirm");
+            number.value = "1";
+            close();
+          })
+          .catch((e) => {
+            // error.value = "Error al crear la tarea: " + e.message;
+            // setTimeout(() => {
+            //   error.value = "";
+            // }, 5000);
+            number.value = "2";
+          });
+      } else {
+        error.value = "Token no encontrado. Por favor, autentíquese primero.";
+        setTimeout(() => {
+          error.value = "";
+        }, 5000);
       }
     }
-
+    const show = ref(false);
+    const number = ref("");
     return {
+      show,
+      number,
       showNewTask,
       close,
       newTask,
+
       emergencys,
       requirements,
       task_name,
@@ -97,10 +118,12 @@ export default {
       description_task,
     };
   },
+  components: { Warning },
 };
 </script>
 
 <template>
+  <Warning :showMessage="show" :warningNumber="number" />
   <button class="button" @click="showNewTask">Añadir Tarea</button>
   <div class="screen" @click="close">
     <div class="new-task" @click.stop>
@@ -144,111 +167,3 @@ export default {
     </div>
   </div>
 </template>
-
-<style scoped>
-.button {
-  padding: 15px 50px;
-  border: none;
-  border-radius: 10px;
-  margin-right: 20px;
-  font-family: "Quicksand", sans-serif;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: -1;
-  transition: zIndex 0.3s ease;
-}
-
-.new-task {
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  background-color: #fff;
-  font-family: "Quicksand", sans-serif;
-  padding: 40px;
-  z-index: 4;
-  transition: all 0.5s ease;
-  max-width: 589px;
-}
-
-.new-task > h2 {
-  font-weight: 400;
-  margin: 0;
-  margin-bottom: 10px;
-}
-
-.new-task > button {
-  font-family: "Quicksand", sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  color: #fff;
-  padding: 5px 10px;
-  width: 90px;
-  right: 100%;
-  margin-top: 10px;
-  margin-left: 254px;
-  border-radius: 50px;
-  background: #11303d;
-  border: 1px solid #11303d;
-  transition: background 0.5s ease;
-}
-
-.new-task > button:hover {
-  cursor: pointer;
-  color: #11303d;
-  background: #fff;
-}
-
-#emergency,
-#name,
-#numbers,
-#desc {
-  resize: none;
-  font-family: "Quicksand", sans-serif;
-  border: none;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: rgb(218, 218, 218);
-}
-
-#emergency > option {
-  max-height: 36px;
-  overflow-y: auto;
-}
-
-#emergency:hover {
-  cursor: pointer;
-}
-
-.requirementsBox {
-  background-color: rgb(218, 218, 218);
-  max-height: 115px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.requirements {
-  display: flex;
-  justify-content: space-between;
-  border-radius: 5px;
-  padding: 3px;
-  margin-bottom: 5px;
-}
-
-.requirements:hover {
-  background-color: rgb(151, 151, 151);
-}
-</style>

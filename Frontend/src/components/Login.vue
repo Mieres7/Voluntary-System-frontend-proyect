@@ -1,74 +1,131 @@
 <script>
+import axios from "axios";
 import { ref } from "vue";
-import AuthService from "../services/AuthService";
+import Warning from "./Warning.vue";
+
 export default {
   name: "Login",
+  components: { Warning },
   setup() {
     const username = ref(""),
       password = ref(""),
-      first_name = ref("");
+      first_name = ref(""),
+      error = ref("");
+
+    const show = ref(false),
+      show_login = ref(false);
+
+    function showError(errorValue) {
+      switch (errorValue) {
+        case 0:
+          show.value = true;
+          setTimeout(() => {
+            show.value = false;
+          }, 2500);
+          break;
+        case 1:
+          show_login.value = true;
+          setTimeout(() => {
+            show_login.value = false;
+          }, 2500);
+        default:
+          break;
+      }
+    }
 
     const change = () => {
       const d = document;
-
       const $login = d.querySelector(".login"),
         $register = d.querySelector(".register");
       const $btnLogin = d.getElementById("btnLogin"),
         $btnRegister = d.getElementById("btnRegister");
-
       $btnLogin.addEventListener("click", (e) => {
         $login.classList.add("hide");
-
         setTimeout(() => {
           $register.classList.remove("hide");
         }, 200);
       });
-
       $btnRegister.addEventListener("click", (e) => {
         setTimeout(() => {
           $login.classList.remove("hide");
         }, 200);
-
         $register.classList.add("hide");
       });
     };
-
     const login = () => {
-      const auth = new AuthService();
-      auth.login(username, password);
+      const credentials = {
+        username: username.value,
+        password: password.value,
+      };
+      // Solicitud POST al servidor para autenticar al usuario
+      axios
+        .post("http://localhost:8080/auth/login", credentials)
+        .then((response) => {
+          localStorage.setItem("token", response.data.token);
+          axios.defaults.headers.common["Authorization"] =
+            "Bearer " + localStorage.getItem("token");
+          router.push("/task");
+        })
+        .catch((e) => {
+          showError(1);
+        });
     };
-
     const register = () => {
-      const auth = new AuthService();
-      auth.register(first_name, username, password);
+      const credentials = {
+        username: username.value,
+        password: password.value,
+        first_name: first_name.value,
+      };
+      // Solicitud POST al servidor para autenticar al usuario
+      axios
+        .post("http://localhost:8080/auth/register", credentials)
+        .then((response) => {
+          localStorage.setItem("token", response.data.token);
+          axios.defaults.headers.common["Authorization"] =
+            "Bearer " + localStorage.getItem("token");
+          router.push("/task");
+        })
+        .catch((e) => {
+          showError(1);
+        });
     };
-
     return {
       change,
       login,
       register,
+      showError,
       first_name,
       username,
       password,
+      error,
+      show,
+      show_login,
     };
   },
 };
 </script>
 
 <template>
-  <body>
-    <div class="container login">
+  <Warning :showMessage="show_login" :warningNumber="'1'" />
+  <Warning :showMessage="show" :warningNumber="'0'" />
+
+  <div class="login-main">
+    <div class="login-reg-container login hide">
       <div class="form-information">
         <div class="form-information-childs">
           <h1>Bienvenido!</h1>
           <h2>Crear una cuenta</h2>
           <form class="form">
             <label>
-              <i class="bx bxs-crown"></i>
-              <input type="text" placeholder="Nombre" v-model="first_name" />
+              <i class="bx bxs-user"></i>
+              <input
+                type="text"
+                placeholder="Nombre y apellido"
+                v-model="first_name"
+              />
             </label>
             <label>
-              <i class="bx bx-user"></i>
+              <i class="bx bx-crown"></i>
               <input type="email" placeholder="Usuario" v-model="username" />
             </label>
             <label>
@@ -86,10 +143,10 @@ export default {
             />
           </form>
           <p>o regístrate con</p>
-          <div class="icons">
-            <i class="bx bxl-google"></i>
-            <i class="bx bxl-facebook"></i>
-            <i class="bx bxl-github"></i>
+          <div class="icons-login">
+            <i class="bx bxl-google btn" @click="showError(0)"></i>
+            <i class="bx bxl-facebook btn" @click="showError(0)"></i>
+            <i class="bx bxl-github btn" @click="showError(0)"></i>
           </div>
           <div class="test">
             <p>¿Ya tienes una cuenta?</p>
@@ -102,14 +159,14 @@ export default {
       </div>
     </div>
 
-    <div class="container register hide">
+    <div class="login-reg-container register">
       <div class="form-information">
         <div class="form-information-childs">
           <h1>Bienvenido de vuelta!</h1>
           <h2>Iniciar sesión</h2>
           <form class="form">
             <label>
-              <i class="bx bx-envelope"></i>
+              <i class="bx bx-crown"></i>
               <input type="email" placeholder="Usuario" v-model="username" />
             </label>
             <label>
@@ -127,10 +184,10 @@ export default {
             />
           </form>
           <p>o inicia sesión con</p>
-          <div class="icons">
-            <i class="bx bxl-google"></i>
-            <i class="bx bxl-facebook"></i>
-            <i class="bx bxl-github"></i>
+          <div class="icons-login">
+            <i class="bx bxl-google btn" @click="showError(0)"></i>
+            <i class="bx bxl-facebook btn" @click="showError(0)"></i>
+            <i class="bx bxl-github btn" @click="showError(0)"></i>
           </div>
           <div class="test2">
             <p>¿Aun no tienes cuenta?</p>
@@ -142,160 +199,7 @@ export default {
         </div>
       </div>
     </div>
-    <!-- <p>hola</p> -->
-  </body>
+  </div>
 </template>
 
-<style scoped>
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  flex-direction: column;
-}
-.container {
-  margin: 20px;
-  transform: all 1s ease;
-  border-radius: 20px;
-  box-shadow: 0 5px 7px rgba(0, 0, 0, 0.1);
-  height: 540px;
-  width: 400px;
-  max-width: 900px;
-  transform: translateY(0);
-  transition: transform 1.5s ease;
-}
-.form-information {
-  height: 100%;
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  text-align: center;
-  background-color: #f8f8f8;
-  border-radius: 20px;
-}
-
-.form-information-childs h1 {
-  color: #333;
-  font-size: 1rem;
-  font-family: "Quicksand", sans-serif;
-}
-.form-information-childs h2 {
-  color: #333;
-  font-size: 2rem;
-  font-family: "Quicksand", sans-serif;
-}
-.form-information-childs p {
-  color: #555;
-  font-family: "Quicksand", sans-serif;
-}
-.icons {
-  margin: 10px 0 25px 0;
-}
-.icons i {
-  border-radius: 50%;
-  padding: 15px;
-  cursor: pointer;
-  margin: 0 10px;
-  color: #003366;
-  transition: background-color 0.3s ease;
-  border: solid thin #003366;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-.hide {
-  position: fixed;
-  transform: translate(0, -300%);
-  transition: transform 2s ease;
-}
-.icons i:hover {
-  background-color: #003366;
-  color: #fff;
-  transition: 0.5s ease;
-}
-.form {
-  margin: 30px 0 0 0;
-}
-.form label {
-  display: flex;
-  background-color: #fff;
-  align-items: center;
-  margin-bottom: 15px;
-  border-radius: 20px;
-  padding: 0 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-.form label input {
-  width: 100%;
-  padding: 15px;
-  background-color: #fff;
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  color: #333;
-  font-family: "Quicksand", sans-serif;
-}
-.form label i {
-  color: #a7a7a7;
-}
-.form input[type="submit"] {
-  background-color: #d5a983;
-  background-color: #003366;
-  color: #fff;
-  border-radius: 20px;
-  border: none;
-  padding: 10px 25px;
-  cursor: pointer;
-  margin-top: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-family: "Quicksand", sans-serif;
-}
-.form input[type="submit"]:hover {
-  background-color: #fff;
-  color: #003366;
-  transition: 0.5s ease;
-}
-.form label:hover {
-  transform: translateY(-10%);
-  transition: 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-.test {
-  position: absolute;
-  bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Quicksand", sans-serif;
-  font-size: 15px;
-}
-.test p {
-  margin: 0 5px;
-}
-.test2 {
-  position: absolute;
-  bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Quicksand", sans-serif;
-  font-size: 15px;
-}
-.test2 p {
-  margin: 0 5px;
-}
-.regBtn {
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: inherit;
-  cursor: pointer;
-  text-decoration: underline;
-  font-family: "Quicksand", sans-serif;
-  color: #333;
-}
-.regBtn:hover {
-  color: #003366;
-  transition: 0.1 ease;
-}
-</style>
+<!-- <style scoped></style> -->
