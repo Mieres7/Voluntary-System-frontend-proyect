@@ -20,20 +20,7 @@ export default {
         {},
         {},
       ]),
-      task = ref([
-        {
-          task_id: "0",
-          task_name: "Regoger piedras",
-          volunteers_requiered: "20",
-          state_name: "done",
-          emergency_type: "0",
-        },
-        {},
-        {},
-        {},
-        {},
-        {},
-      ]),
+      task = ref([]),
       volunteers = ref([
         {
           rut: "12.345.678-9",
@@ -65,7 +52,19 @@ export default {
         "tsunami",
         "flood-water",
       ]);
-    return { emergencys, task, volunteers, icons, colors };
+
+    function getTaskByEmergency(emergencyId) {
+      console.log(emergencyId);
+      this.task.push({
+        task_id: "0",
+        task_name: "Regoger piedras",
+        volunteers_requiered: "20",
+        state_name: "done",
+        emergency_type: "0",
+      });
+    }
+
+    return { getTaskByEmergency, emergencys, task, volunteers, icons, colors };
   },
 };
 </script>
@@ -77,12 +76,20 @@ export default {
     </div>
     <div class="emergencys">
       <div class="content">
-        <div class="info" v-for="i in emergencys">
+        <div
+          class="info"
+          id="emergency-int"
+          v-for="i in emergencys"
+          @click="getTaskByEmergency(i.emergency_id)"
+        >
           <p>{{ i.emergency_name }}</p>
           <p>ID: {{ i.emergency_id }}</p>
           <p>Estado: {{ i.emergency_state }}</p>
-          <div class="icons">
-            <i class="fa-solid icon" :class="this.icons[i.emergency_type]"></i>
+          <div class="icons-int">
+            <i
+              class="fa-solid icon-int"
+              :class="this.icons[i.emergency_type]"
+            ></i>
           </div>
         </div>
       </div>
@@ -90,15 +97,18 @@ export default {
     <div class="tTitle">
       <h2>Tareas</h2>
     </div>
-    <div class="task">
+    <div class="task-int">
       <div class="content">
         <div class="info" v-for="t in task">
           <p>{{ t.task_name }}</p>
           <p>ID: {{ t.task_id }}</p>
           <P>Estado: {{ t.state_name }}</P>
           <p>Voluntarios: {{ t.volunteers_requiered }}</p>
-          <div class="icons">
-            <i class="fa-solid icon" :class="this.icons[t.emergency_type]"></i>
+          <div class="icons-int">
+            <i
+              class="fa-solid icon-int"
+              :class="this.icons[t.emergency_type]"
+            ></i>
           </div>
         </div>
       </div>
@@ -138,16 +148,19 @@ export default {
   grid-area: eTitle;
 }
 
-.icon {
-  position: sticky;
-  font-size: 20px;
-  color: #999898;
-}
-
 .icons {
   display: flex;
   align-items: end;
   justify-content: end;
+}
+.icon {
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  font-size: 150px;
+  color: #e8e8e8;
+  opacity: 1;
+  margin-left: 5px;
 }
 
 .info {
@@ -159,13 +172,39 @@ export default {
   background-color: whitesmoke;
   border-radius: 10px;
   text-align: start;
-  /* overflow: ; */
+  position: relative;
+  overflow: hidden;
+  height: 180px;
+  transition: all ease 0.1s;
 }
 
-.emergencys,
-.task,
+.info:hover {
+  transform: translateY(1px);
+  cursor: pointer;
+}
+
+#emergency {
+  transition: all ease 0.1s;
+}
+
+.emergencys {
+  grid-area: emergencys;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 25px 25px 25px;
+}
+
+.task {
+  grid-area: task;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 25px 25px 25px;
+}
+
 .volunteers {
-  grid-area: emergencys, task, volunteers;
+  grid-area: volunteers;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -207,24 +246,5 @@ h2 {
   all: initial;
   font-family: "Quicksand", sans-serif;
   font-size: 2rem;
-}
-
-.fire {
-  background-color: rgb(232, 123, 22); /* Naranja claro */
-}
-.volcano {
-  background-color: rgb(138, 16, 24); /* Rojo oscuro */
-}
-.house-crack {
-  background-color: rgb(22, 126, 22); /* Verde oscuro */
-}
-.rock-slide {
-  background-color: rgb(105, 78, 24); /* Marrón oscuro */
-}
-.tsunami {
-  background-color: rgb(0, 48, 99); /* Azul oscuro */
-}
-.flood-water {
-  background-color: rgb(44, 77, 139); /* Azul más oscuro */
 }
 </style>

@@ -36,14 +36,7 @@ export default {
       "fa-house-tsunami",
       "fa-house-flood-water",
     ]);
-    const colors = ref([
-      "fire",
-      "volcano",
-      "house-crack",
-      "rock-slide",
-      "tsunami",
-      "flood-water",
-    ]);
+
     const options = ref(["nombre", "descripción", "estado", "n° voluntarios"]);
     const iconsMenu = ref([
       "fa-pen-to-square",
@@ -107,7 +100,6 @@ export default {
       icons,
       iconsMenu,
       options,
-      colors,
     };
   },
 };
@@ -124,7 +116,7 @@ export default {
       "
     >
       <div class="top">{{ index }}. {{ task.name }}</div>
-      <div class="bot" :class="this.colors[task.clasification]">
+      <div class="bot">
         Estado: {{ task.state }} <br />{{ task.volunteersS }}/{{
           task.volunteersR
         }}
@@ -151,125 +143,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-.fire {
-  background-color: rgb(232, 123, 22); /* Naranja claro */
-}
-.volcano {
-  background-color: rgb(138, 16, 24); /* Rojo oscuro */
-}
-.house-crack {
-  background-color: rgb(22, 126, 22); /* Verde oscuro */
-}
-.rock-slide {
-  background-color: rgb(105, 78, 24); /* Marrón oscuro */
-}
-.tsunami {
-  background-color: rgb(0, 48, 99); /* Azul oscuro */
-}
-.flood-water {
-  background-color: rgb(44, 77, 139); /* Azul más oscuro */
-}
-
-.task {
-  display: grid;
-  grid-area: "top" "bot";
-  grid-template-columns: 100%;
-  grid-template-rows: 25% 75%;
-  width: 276px;
-  height: 200px;
-  border-radius: 16px;
-  z-index: 0;
-  margin-left: 10px;
-  margin-bottom: 10px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  transition: all ease 0.1s;
-}
-.task:hover {
-  transform: translateY(2px) translateX(1px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-}
-
-.top {
-  background-color: #cecece;
-  border-top-right-radius: 16px;
-  border-top-left-radius: 16px;
-  font-family: "Quicksand", sans-serif;
-  font-size: 18px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 10px;
-}
-.top > button {
-  border: 0;
-  background: none;
-  font-size: 15px;
-}
-.top > button:hover {
-  transform: translateY(1px);
-  cursor: pointer;
-}
-
-.bot {
-  font-size: 17px;
-  font-family: "Quicksand", sans-serif;
-  font-weight: 400;
-  padding: 5px;
-  text-align: start;
-}
-
-.icons {
-  display: flex;
-  align-items: end;
-  justify-content: end;
-}
-.icon {
-  position: absolute;
-  right: -20px;
-  bottom: -20px;
-  font-size: 140px;
-  color: #e8e8e8;
-  opacity: 0.3;
-  margin-left: 5px;
-}
-
-.menu {
-  display: none;
-  width: 210px;
-  border-radius: 10px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 10px;
-  background-color: #fff;
-  z-index: 9999;
-  font-family: "Quicksand", sans-serif;
-  border: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.menu li {
-  border-radius: 10px;
-  padding: 8px 10px;
-}
-.menu a {
-  text-decoration: none;
-  color: #333;
-  display: block;
-}
-.menu li:hover {
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-</style>
+<style scoped></style>
