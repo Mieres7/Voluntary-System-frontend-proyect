@@ -2,6 +2,7 @@
 import axios from "axios";
 import { ref } from "vue";
 import Warning from "./Warning.vue";
+import { useRouter } from "vue-router";
 
 export default {
   name: "Login",
@@ -9,7 +10,7 @@ export default {
   setup() {
     const username = ref(""),
       password = ref(""),
-      first_name = ref(""),
+      name = ref(""),
       error = ref("");
 
     const show = ref(false),
@@ -32,6 +33,8 @@ export default {
           break;
       }
     }
+
+    const router = useRouter();
 
     const change = () => {
       const d = document;
@@ -64,7 +67,7 @@ export default {
           localStorage.setItem("token", response.data.token);
           axios.defaults.headers.common["Authorization"] =
             "Bearer " + localStorage.getItem("token");
-          router.push("/task");
+          router.push('/task');
         })
         .catch((e) => {
           showError(1);
@@ -74,7 +77,7 @@ export default {
       const credentials = {
         username: username.value,
         password: password.value,
-        first_name: first_name.value,
+        name: name.value,
       };
       // Solicitud POST al servidor para autenticar al usuario
       axios
@@ -83,7 +86,7 @@ export default {
           localStorage.setItem("token", response.data.token);
           axios.defaults.headers.common["Authorization"] =
             "Bearer " + localStorage.getItem("token");
-          router.push("/task");
+          router.push('/task');
         })
         .catch((e) => {
           showError(1);
@@ -94,7 +97,7 @@ export default {
       login,
       register,
       showError,
-      first_name,
+      name,
       username,
       password,
       error,
@@ -121,7 +124,7 @@ export default {
               <input
                 type="text"
                 placeholder="Nombre y apellido"
-                v-model="first_name"
+                v-model="name"
               />
             </label>
             <label>
