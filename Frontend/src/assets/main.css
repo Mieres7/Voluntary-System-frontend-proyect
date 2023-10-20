@@ -645,7 +645,6 @@ label[for="nav-toggle"] {
 
 
 /* AddTask */
-
 .button {
   padding: 15px 50px;
   border: none;
@@ -751,7 +750,6 @@ label[for="nav-toggle"] {
 .requirements:hover {
   background-color: rgb(151, 151, 151);
 }
-
 
 /* Profile component */
 
@@ -961,13 +959,22 @@ img {
 
 .tTitle {
   grid-area: tTitle;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
 }
 
 .vTitle {
   grid-area: vTitle;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
 }
 
 .eTitle {
+  grid-area: eTitle;
   display: flex;
   justify-content: center;
   text-align: center;
