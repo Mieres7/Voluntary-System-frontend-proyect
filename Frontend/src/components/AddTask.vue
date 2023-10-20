@@ -71,7 +71,7 @@ export default {
         requirements: temp,
         volunteers_required: this.volunteers_required,
         description: this.description_task,
-      }; // PREGUNTAR JWT TERMINAR DE MODIFICAR ERRORES Y CONECTAR, CREO QUE NO FALTA NADA MAS
+      };
 
       const token = localStorage.getItem("token");
       axios.defaults.headers.common["Authorization"] =
@@ -83,7 +83,7 @@ export default {
           .post("http://localhost:8080/task", newTask)
           .then(() => {
             // emit("confirm");
-            number.value = "1";
+
             close();
           })
           .catch((e) => {
@@ -91,7 +91,6 @@ export default {
             // setTimeout(() => {
             //   error.value = "";
             // }, 5000);
-            number.value = "2";
           });
       } else {
         error.value = "Token no encontrado. Por favor, autentíquese primero.";
@@ -101,14 +100,14 @@ export default {
       }
     }
     const show = ref(false);
-    const number = ref("");
+
+    function showError() {}
+
     return {
-      show,
-      number,
       showNewTask,
       close,
       newTask,
-
+      show,
       emergencys,
       requirements,
       task_name,
@@ -123,9 +122,9 @@ export default {
 </script>
 
 <template>
-  <Warning :showMessage="show" :warningNumber="number" />
   <button class="button" @click="showNewTask">Añadir Tarea</button>
   <div class="screen" @click="close">
+    <Warning :showMessage="show" :warningNumber="number" />
     <div class="new-task" @click.stop>
       <h2>Nueva Tarea</h2>
       <p>Seleccione una emergencia</p>
