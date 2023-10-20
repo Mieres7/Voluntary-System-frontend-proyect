@@ -1,46 +1,21 @@
 <script>
 import axios from "axios";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Warning from "./Warning.vue";
-// import jwtDecode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 export default {
   name: "AddTask",
   emits: ["confirm"],
-  setup(_, { emit }) {
+  setup() {
     const d = document;
-    const emergencys = ref([
-        {
-          emergnecy_name: "emergencia",
-          emergency_id: "100",
-        },
-        {},
-        {},
-        {},
-      ]),
-      requirements = ref([
-        {
-          requirement_name: "requisito 1",
-          requirement_id: "0",
-        },
-        {
-          requirement_name: "requisito 2",
-          requirement_id: "1",
-        },
-        {
-          requirement_name: "requisito 3",
-          requirement_id: "2",
-        },
-        {},
-        {},
-        {},
-        {},
-        {},
-      ]);
+    const emergencys = ref([]);
     const task_name = ref(""),
       emergency = ref({}),
       requirementsSelected = ref([]),
       volunteers_required = ref(""),
-      description_task = ref("");
+      description_task = ref(""),
+      requirements = ref([]);
+
     function showNewTask() {
       const $screen = d.querySelector(".screen"),
         $newtask = d.querySelector(".new-task");
@@ -63,7 +38,6 @@ export default {
 
       const parts = emergency.value.split(": ");
       const emergency_id = parts[1].split(" - ")[0];
-      console.log(emergency_id);
 
       const newTask = {
         task_name: this.task_name,
@@ -77,37 +51,60 @@ export default {
       axios.defaults.headers.common["Authorization"] =
         "Bearer " + localStorage.getItem("token");
       if (token) {
-        const decodedToken = jwtDecode(token);
-        task.value.id_user = decodedToken.id;
         axios
           .post("http://localhost:8080/task", newTask)
           .then(() => {
-            // emit("confirm");
-
+            showError(1);
             close();
           })
-          .catch((e) => {
-            // error.value = "Error al crear la tarea: " + e.message;
-            // setTimeout(() => {
-            //   error.value = "";
-            // }, 5000);
+          .catch(() => {
+            showError(0);
+            close();
           });
       } else {
-        error.value = "Token no encontrado. Por favor, autentíquese primero.";
-        setTimeout(() => {
-          error.value = "";
-        }, 5000);
+        showError(2);
+        close();
       }
     }
-    const show = ref(false);
 
-    function showError() {}
+    function getEmergencys() {
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      if (token) {
+        axios
+          .get("http://localhost:8080/emergency/get_state_names")
+          .then((res) => {
+            emergencys.value = res.data;
+          })
+          .catch(); //error
+      }
+    }
+
+    function getRequirements() {
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      if (token) {
+        axios
+          .get("http://localhost:8080/emergency/get_request_names")
+          .then((res) => {
+            requirements.value = res.data;
+          })
+          .catch(); //error
+      }
+    }
+    onMounted(() => {
+      getEmergencys();
+      getRequirements();
+    });
 
     return {
       showNewTask,
       close,
       newTask,
-      show,
+      getRequirements,
+      getEmergencys,
       emergencys,
       requirements,
       task_name,
@@ -123,14 +120,14 @@ export default {
 
 <template>
   <button class="button" @click="showNewTask">Añadir Tarea</button>
+
   <div class="screen" @click="close">
-    <Warning :showMessage="show" :warningNumber="number" />
     <div class="new-task" @click.stop>
       <h2>Nueva Tarea</h2>
       <p>Seleccione una emergencia</p>
       <select id="emergency" size="1" v-model="emergency">
         <option v-for="emergency in this.emergencys">
-          ID: {{ emergency.emergency_id }} - {{ emergency.emergnecy_name }}
+          ID: {{ emergency.id_emergency }} - {{ emergency.emergnecy_name }}
         </option>
       </select>
       <p>Nombre</p>
@@ -138,7 +135,7 @@ export default {
       <p>Seleccione los requisitos nescesarios</p>
       <div class="requirementsBox">
         <div class="requirements" v-for="requirement in this.requirements">
-          <label>{{ requirement.requirement_name }}</label>
+          <label>{{ requirement.request }}</label>
           <input
             type="checkbox"
             :value="requirement.requirement_id"

@@ -1,33 +1,13 @@
 <script>
 import axios from "axios";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 export default {
   name: "Task",
   components: {},
   emits: ["modifierSignal", "showInfo"],
   setup(_, { emit }) {
-    const taskList = ref([
-      {
-        idT: "0",
-        name: "Recoleccion de leña",
-        description: "jsdlkfjasdlads;;;ldkfja;sdlkfjsd;lkfjsdkl;fjds;lkf",
-        state: "done",
-        idE: "1",
-        volunteersR: "5",
-        volunteersS: "2",
-        clasification: "0",
-      },
-      { clasification: "1" },
-      { clasification: "2" },
-      { clasification: "3" },
-      { clasification: "4" },
-      { clasification: "5" },
-      {},
-      {},
-      {},
-      {},
-    ]);
+    const taskList = ref([]);
     const icons = ref([
       "fa-fire",
       "fa-volcano",
@@ -47,12 +27,19 @@ export default {
 
     const selectedTask = ref(null);
 
-    const getTaskByEmergencyId = () => {
-      axios.get("ruta").then((res) => {
-        this.taskList = res.data;
-      });
+    const getTask = () => {
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      if (token) {
+        axios
+          .get("http://localhost:8080/ranking/tasks_information")
+          .then((res) => {
+            taskList.value = res.data;
+          })
+          .catch(console.log("hola"));
+      }
     };
-    getTaskByEmergencyId();
 
     const showMenu = (event, idTask) => {
       const d = document;
@@ -77,7 +64,11 @@ export default {
     };
 
     const modifieProperties = (propertySelectedIndex) => {
-      emit("modifierSignal", propertySelectedIndex);
+      const info = {
+        index: propertySelectedIndex,
+        id: selectedTask.value,
+      };
+      emit("modifierSignal", info);
     };
 
     const showInfoTask = (name, description, state, volunteersR) => {
@@ -90,11 +81,16 @@ export default {
       emit("showInfo", info);
     };
 
+    onMounted(() => {
+      getTask();
+    });
+
     return {
       modifieProperties,
       showInfoTask,
       showMenu,
       closeMenu,
+      getTask,
       taskList,
       selectedTask,
       icons,
@@ -110,22 +106,26 @@ export default {
   <div class="container" v-for="(task, index) in this.taskList" :key="index">
     <div
       class="task"
-      @contextmenu.prevent="showMenu($event, task.idT)"
+      @contextmenu.prevent="showMenu($event, task.task_id)"
       @click.prevent="
-        showInfoTask(task.name, task.description, task.state, task.volunteersR)
+        showInfoTask(
+          task.task_name,
+          task.task_description,
+          task.id_state,
+          task.volunteers_required
+        )
       "
     >
-      <div class="top">{{ index }}. {{ task.name }}</div>
+      <div class="top">{{ index }}. {{ task.task_name }}</div>
       <div class="bot">
-        Estado: {{ task.state }} <br />{{ task.volunteersS }}/{{
-          task.volunteersR
-        }}
-        <i class="fa-solid fa-user"></i> <br />
+        Estado: {{ task.state }} <br />
+        {{ task.volunteersR }} <i class="fa-solid fa-user"></i> <br />
 
-        ID: {{ task.idT }}
+        ID: {{ task.id_task }}
 
         <div class="icons">
-          <i class="fa-solid icon" :class="this.icons[task.clasification]"> </i>
+          <i class="fa-solid icon" :class="this.icons[task.emergency_type]">
+          </i>
         </div>
       </div>
     </div>
