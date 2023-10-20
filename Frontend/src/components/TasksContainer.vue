@@ -3,7 +3,7 @@ import Task from "./Task.vue";
 import AddTask from "../components/AddTask.vue";
 import { ref } from "vue";
 import Warning from "./Warning.vue";
-
+import jwtDecode from "jwt-decode";
 export default {
   name: "TasksContainer",
   components: { Task, AddTask, Warning },
@@ -22,10 +22,12 @@ export default {
       description = ref(""),
       state = ref(""),
       volunteersR = ref(""),
-      show = ref(false);
+      show = ref(false),
+      taskSelectedId = ref("");
 
-    function modifier(value) {
-      propertySelectedIndex.value = value;
+    function modifier(info) {
+      propertySelectedIndex.value = info.index;
+      taskSelectedId.value = info.id;
 
       const $modifier = d.querySelector(".modifier"),
         $overlay = d.querySelector(".overlay"),
@@ -63,43 +65,98 @@ export default {
 
     function updateTask() {
       const selectedIndex = parseInt(propertySelectedIndex.value);
-      switch (selectedIndex) {
-        case 0:
-          // put de nombre
-          closeModifier();
-          break;
-        case 1:
-          // put de descripcion
-          closeModifier();
-          break;
-        case 2:
-          if (states.value.includes(modifiedValue)) {
-            // ruta put
+
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      if (token) {
+        switch (selectedIndex) {
+          case 0:
+            // put de nombre
+            axios
+              .put(
+                "http://localhost:8080/task/updateTaskName/" +
+                  taskSelectedId.value +
+                  "/" +
+                  name.value
+              )
+              .then(() => {
+                close();
+              })
+              .catch(() => {
+                // error
+              });
             closeModifier();
-          } else {
-            alert.value = true;
-            setTimeout(() => {
-              alert.value = false;
-            }, 3000);
-          }
-          break;
-        case 3:
-          const volunteers = parseInt(modifiedValue.value);
-          if (!isNaN(volunteers)) {
-            // ruta put
+            break;
+          case 1:
+            // put de descripcion
+            axios
+              .put(
+                "http://localhost:8080/task/updateTaskName/" +
+                  taskSelectedId.value +
+                  "/" +
+                  description.value
+              )
+              .then(() => {
+                close();
+              })
+              .catch(() => {
+                // error
+              });
             closeModifier();
-          } else {
-            alert.value = true;
-            setTimeout(() => {
-              alert.value = false;
-            }, 3000);
-          }
-          break;
-        default:
-          break;
+            break;
+          case 2:
+            if (states.value.includes(modifiedValue)) {
+              axios
+                .put(
+                  "http://localhost:8080/task/updateTaskName/" +
+                    taskSelectedId.value +
+                    "/" +
+                    volunteersR.value
+                )
+                .then(() => {
+                  close();
+                })
+                .catch(() => {
+                  // error
+                });
+              closeModifier();
+            } else {
+              alert.value = true;
+              setTimeout(() => {
+                alert.value = false;
+              }, 3000);
+            }
+            break;
+          case 3:
+            const volunteers = parseInt(modifiedValue.value);
+            if (!isNaN(volunteers)) {
+              axios
+                .put(
+                  "http://localhost:8080/task/updateTaskName/" +
+                    taskSelectedId.value +
+                    "/" +
+                    state.value
+                )
+                .then(() => {
+                  close();
+                })
+                .catch(() => {
+                  // error
+                });
+              closeModifier();
+            } else {
+              alert.value = true;
+              setTimeout(() => {
+                alert.value = false;
+              }, 3000);
+            }
+            break;
+          default:
+            break;
+        }
       }
     }
-
     return {
       modifier,
       close,
@@ -116,6 +173,7 @@ export default {
       state,
       volunteersR,
       show,
+      taskSelectedId,
     };
   },
 };
@@ -123,7 +181,8 @@ export default {
 
 <template>
   <div class="task-container">
-    <!-- <Warning :showMessage="show" :warningNumber="'0'" /> -->
+    <Warning :showMessage="show" :warningNumber="'0'" />
+
     <div class="filters">
       Filtros
       <AddTask />
@@ -134,12 +193,14 @@ export default {
 
     <div class="overlay" @click="close">
       <div class="modifier" @click.stop>
+        <!-- update tarea-->
         <span>Cambiar {{ this.options[this.propertySelectedIndex] }}</span>
         <input type="text" v-model="modifiedValue" />
         <button type="button" @click="updateTask()">Aceptar</button>
         <p v-if="alert">{{ alertOptions[this.propertySelectedIndex - 2] }}</p>
       </div>
       <div class="task-info" @click.stop>
+        <!-- info tarea-->
         <h2>{{ this.name }}</h2>
         <p>Descripción: {{ this.description }}</p>
         <p>Estado: {{ this.state }}</p>

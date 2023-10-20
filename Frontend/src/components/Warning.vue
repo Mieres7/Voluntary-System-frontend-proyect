@@ -29,6 +29,7 @@ export default {
       "¡Error al crear la tarea!",
       "¡Usuario o constraseña incorrectos!",
       "¡El usuario ya existe!",
+      "Token no encontrado. Por favor autentíquese",
     ];
 
     const show = ref(props.showMessage);

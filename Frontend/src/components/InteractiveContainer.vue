@@ -5,37 +5,9 @@ export default {
   name: "InteractiveContainer",
   components: { Task },
   setup() {
-    const emergencys = ref([
-        {
-          emergency_name: "Emergencia estatal de santiago de chile",
-          emergency_id: "0",
-          emergency_state: "En proceso",
-          emergency_type: "0",
-        },
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-      ]),
+    const emergencys = ref([]),
       task = ref([]),
-      volunteers = ref([
-        {
-          rut: "12.345.678-9",
-          volunteer_name: "Pedro",
-          flag: true,
-        },
-        {
-          rut: "09.876.543-2",
-          volunteer_name: "Matias",
-          flag: false,
-        },
-        {},
-        {},
-        {},
-      ]);
+      volunteers = ref([]);
     const icons = ref([
         "fa-fire",
         "fa-volcano",
@@ -54,17 +26,42 @@ export default {
       ]);
 
     function getTaskByEmergency(emergencyId) {
-      console.log(emergencyId);
-      this.task.push({
-        task_id: "0",
-        task_name: "Regoger piedras",
-        volunteers_requiered: "20",
-        state_name: "done",
-        emergency_type: "0",
-      });
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      if (token) {
+        axios
+          .get("http://localhost:8080/task/get_s/" + emergencyId)
+          .then((res) => {
+            task.value = res.data;
+          })
+          .catch();
+      }
     }
 
-    return { getTaskByEmergency, emergencys, task, volunteers, icons, colors };
+    function getEmergencys() {
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      if (token) {
+        axios
+          .get("http://localhost:8080/emergency/get_state_names")
+          .then((res) => {
+            emergencys.value = res.data;
+          })
+          .catch();
+      }
+    }
+
+    return {
+      getTaskByEmergency,
+      getEmergencys,
+      emergencys,
+      task,
+      volunteers,
+      icons,
+      colors,
+    };
   },
 };
 </script>
@@ -80,11 +77,11 @@ export default {
           class="info"
           id="emergency-int"
           v-for="i in emergencys"
-          @click="getTaskByEmergency(i.emergency_id)"
+          @click="getTaskByEmergency(i.id_emergency)"
         >
           <p>{{ i.emergency_name }}</p>
-          <p>ID: {{ i.emergency_id }}</p>
-          <p>Estado: {{ i.emergency_state }}</p>
+          <p>ID: {{ i.id_emergency }}</p>
+          <p>Estado: {{ i.state_name }}</p>
           <div class="icons-int">
             <i
               class="fa-solid icon-int"
@@ -101,7 +98,7 @@ export default {
       <div class="content">
         <div class="info" v-for="t in task">
           <p>{{ t.task_name }}</p>
-          <p>ID: {{ t.task_id }}</p>
+          <p>ID: {{ t.id_task }}</p>
           <P>Estado: {{ t.state_name }}</P>
           <p>Voluntarios: {{ t.volunteers_requiered }}</p>
           <div class="icons-int">

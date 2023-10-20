@@ -74,7 +74,7 @@ export default {
       const credentials = {
         username: username.value,
         password: password.value,
-        first_name: first_name.value,
+        name: first_name.value,
       };
       // Solicitud POST al servidor para autenticar al usuario
       axios
@@ -86,7 +86,7 @@ export default {
           router.push("/task");
         })
         .catch((e) => {
-          showError(1);
+          showError(0);
         });
     };
     return {
