@@ -48,11 +48,9 @@ export default {
       };
 
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + localStorage.getItem("token");
       if (token) {
         axios
-          .post("http://localhost:8080/emergency_task/specialPost", newTask)
+          .post("api/emergency_task/specialPost", newTask)
           .then(() => {
             close();
             emit("reloadTask");
@@ -68,11 +66,9 @@ export default {
 
     function getEmergencys() {
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + localStorage.getItem("token");
       if (token) {
         axios
-          .get("http://localhost:8080/emergency/get_state_names")
+          .get("api/emergency/get_state_names")
           .then((res) => {
             emergencys.value = res.data;
           })
@@ -84,11 +80,9 @@ export default {
 
     function getRequirements() {
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + localStorage.getItem("token");
       if (token) {
         axios
-          .get("http://localhost:8080/request/get_request_names")
+          .get("api/request/get_request_names")
           .then((res) => {
             requirements.value = res.data;
           })

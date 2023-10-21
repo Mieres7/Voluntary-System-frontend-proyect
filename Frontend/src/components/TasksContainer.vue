@@ -77,15 +77,13 @@ export default {
       const selectedIndex = parseInt(propertySelectedIndex.value);
 
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + localStorage.getItem("token");
       if (token) {
         switch (selectedIndex) {
           case 0:
             // put de nombre
             axios
               .put(
-                "http://localhost:8080/task/updateTaskName/" +
+                "api/task/updateTaskName/" +
                   taskSelectedId.value +
                   "/" +
                   modifiedValue.value
@@ -106,7 +104,7 @@ export default {
             // put de descripcion
             axios
               .put(
-                "http://localhost:8080/task/updateDescription/" +
+                "api/task/updateDescription/" +
                   taskSelectedId.value +
                   "/" +
                   modifiedValue.value
@@ -128,7 +126,7 @@ export default {
             if (states.value.includes(modifiedValue.value)) {
               axios
                 .put(
-                  "http://localhost:8080/task/updateState/" +
+                  "api/task/updateState/" +
                     taskSelectedId.value +
                     "/" +
                     modifiedValue.value
@@ -156,7 +154,7 @@ export default {
             if (!isNaN(volunteers)) {
               axios
                 .put(
-                  "http://localhost:8080/task/updateVolunteers/" +
+                  "api/task/updateVolunteers/" +
                     taskSelectedId.value +
                     "/" +
                     modifiedValue.value
