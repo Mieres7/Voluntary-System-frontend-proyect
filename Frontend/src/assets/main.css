@@ -271,7 +271,7 @@
   display: flex;
   align-items: center;
   padding: 10px;
-  justify-content: space-between;
+  justify-content:space-between;
 }
 .tasks {
   grid-area: tasks;
@@ -653,7 +653,7 @@ label[for="nav-toggle"] {
   font-family: "Quicksand", sans-serif;
   font-size: 15px;
   cursor: pointer;
-  z-index: 2;
+  z-index: 1;
 }
 
 .screen {

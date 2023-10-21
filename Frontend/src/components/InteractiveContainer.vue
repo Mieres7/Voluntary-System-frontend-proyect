@@ -1,9 +1,8 @@
 <script>
-import { ref } from "vue";
-import Task from "./Task.vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
 export default {
   name: "InteractiveContainer",
-  components: { Task },
   setup() {
     const emergencys = ref([]),
       task = ref([]),
@@ -23,7 +22,8 @@ export default {
         "rock-slide",
         "tsunami",
         "flood-water",
-      ]);
+      ]),
+      pIcons = ref(["fa-x", "fa-check"]);
 
     function getTaskByEmergency(emergencyId) {
       const token = localStorage.getItem("token");
@@ -35,7 +35,9 @@ export default {
           .then((res) => {
             task.value = res.data;
           })
-          .catch();
+          .catch((e) => {
+            console.log(e);
+          });
       }
     }
 
@@ -49,18 +51,42 @@ export default {
           .then((res) => {
             emergencys.value = res.data;
           })
-          .catch();
+          .catch((e) => {
+            console.log(e);
+          });
       }
     }
+
+    function getVolunteers(taskId) {
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      if (token) {
+        axios
+          .get("http://localhost:8080/users_task_participation/" + taskId)
+          .then((res) => {
+            volunteers.value = res.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    }
+
+    onMounted(() => {
+      getEmergencys();
+    });
 
     return {
       getTaskByEmergency,
       getEmergencys,
+      getVolunteers,
       emergencys,
       task,
       volunteers,
       icons,
       colors,
+      pIcons,
     };
   },
 };
@@ -96,10 +122,10 @@ export default {
     </div>
     <div class="task-int">
       <div class="content">
-        <div class="info" v-for="t in task">
+        <div class="info" v-for="t in task" @click="getVolunteers(t.id_task)">
           <p>{{ t.task_name }}</p>
           <p>ID: {{ t.id_task }}</p>
-          <P>Estado: {{ t.state_name }}</P>
+          <p>Estado: {{ t.state_name }}</p>
           <p>Voluntarios: {{ t.volunteers_requiered }}</p>
           <div class="icons-int">
             <i
@@ -116,10 +142,14 @@ export default {
     <div class="volunteers">
       <div class="content">
         <div class="info" v-for="v in volunteers">
-          <p>{{ v.volunteer_name }}</p>
+          <p>{{ v.first_name }} {{ v.last_name }}</p>
           <p>RUT: {{ v.rut }}</p>
-          <P v-if="v.flag">Participa</P>
-          <p v-if="!v.flag">No participa</p>
+          <p v-if="v.participation == 1">Participa</p>
+          <p v-else>No participa</p>
+          <i
+            class="fa-solid icon-int"
+            :class="this.pIcons[v.participation]"
+          ></i>
         </div>
       </div>
     </div>
