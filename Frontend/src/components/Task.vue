@@ -35,11 +35,9 @@ export default {
 
     const getTask = () => {
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + localStorage.getItem("token");
       if (token) {
         axios
-          .get("http://localhost:8080/ranking/tasks_information")
+          .get("api/ranking/tasks_information")
           .then((res) => {
             taskList.value = res.data;
           })
@@ -90,7 +88,7 @@ export default {
       emit("showInfo", info);
     };
 
-    onMounted(() => {
+    onMounted(async () => {
       getTask();
     });
 

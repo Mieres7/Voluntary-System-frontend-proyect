@@ -27,11 +27,9 @@ export default {
 
     function getTaskByEmergency(emergencyId) {
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + localStorage.getItem("token");
       if (token) {
         axios
-          .get("http://localhost:8080/task/get_s/" + emergencyId)
+          .get("api/task/get_s/" + emergencyId)
           .then((res) => {
             task.value = res.data;
           })
@@ -43,11 +41,9 @@ export default {
 
     function getEmergencys() {
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + localStorage.getItem("token");
       if (token) {
         axios
-          .get("http://localhost:8080/emergency/get_state_names")
+          .get("api/emergency/get_state_names")
           .then((res) => {
             emergencys.value = res.data;
           })
@@ -59,11 +55,9 @@ export default {
 
     function getVolunteers(taskId) {
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + localStorage.getItem("token");
       if (token) {
         axios
-          .get("http://localhost:8080/users_task_participation/" + taskId)
+          .get("api/users_task_participation/" + taskId)
           .then((res) => {
             volunteers.value = res.data;
           })
