@@ -67,7 +67,7 @@ export default {
           localStorage.setItem("token", response.data.token);
           axios.defaults.headers.common["Authorization"] =
             "Bearer " + localStorage.getItem("token");
-          router.push('/task');
+          router.push("/task");
         })
         .catch((e) => {
           showError(1);
@@ -78,10 +78,7 @@ export default {
         username: username.value,
         password: password.value,
 
-        
-
         name: name.value,
-
       };
       // Solicitud POST al servidor para autenticar al usuario
       axios
@@ -90,7 +87,7 @@ export default {
           localStorage.setItem("token", response.data.token);
           axios.defaults.headers.common["Authorization"] =
             "Bearer " + localStorage.getItem("token");
-          router.push('/task');
+          router.push("/task");
         })
         .catch((e) => {
           showError(0);
@@ -113,8 +110,8 @@ export default {
 </script>
 
 <template>
-  <Warning :showMessage="show_login" :warningNumber="'1'" />
-  <Warning :showMessage="show" :warningNumber="'0'" />
+  <Warning :showMessage="show_login" :warningNumber="'3'" />
+  <Warning :showMessage="show" :warningNumber="'4'" />
 
   <div class="login-main">
     <div class="login-reg-container login hide">

@@ -1,12 +1,18 @@
 <script>
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 export default {
   name: "Task",
   components: {},
   emits: ["modifierSignal", "showInfo"],
-  setup(_, { emit }) {
+  props: {
+    reloadTask: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props, { emit }) {
     const taskList = ref([]);
     const icons = ref([
       "fa-fire",
@@ -37,7 +43,9 @@ export default {
           .then((res) => {
             taskList.value = res.data;
           })
-          .catch(console.log("hola"));
+          .catch((e) => {
+            console.log(e);
+          });
       }
     };
 
@@ -68,6 +76,7 @@ export default {
         index: propertySelectedIndex,
         id: selectedTask.value,
       };
+
       emit("modifierSignal", info);
     };
 
@@ -84,6 +93,15 @@ export default {
     onMounted(() => {
       getTask();
     });
+
+    watch(
+      () => props.reloadTask,
+      (newVal) => {
+        if (newVal) {
+          getTask();
+        }
+      }
+    );
 
     return {
       modifieProperties,
@@ -106,20 +124,20 @@ export default {
   <div class="container" v-for="(task, index) in this.taskList" :key="index">
     <div
       class="task"
-      @contextmenu.prevent="showMenu($event, task.task_id)"
+      @contextmenu.prevent="showMenu($event, task.id_task)"
       @click.prevent="
         showInfoTask(
           task.task_name,
           task.task_description,
-          task.id_state,
+          task.state_name,
           task.volunteers_required
         )
       "
     >
-      <div class="top">{{ index }}. {{ task.task_name }}</div>
+      <div class="top">{{ index + 1 }}. {{ task.task_name }}</div>
       <div class="bot">
-        Estado: {{ task.state }} <br />
-        {{ task.volunteersR }} <i class="fa-solid fa-user"></i> <br />
+        Estado: {{ task.state_name }} <br />
+        <i class="fa-solid fa-user"></i> {{ task.volunteers_required }}<br />
 
         ID: {{ task.id_task }}
 

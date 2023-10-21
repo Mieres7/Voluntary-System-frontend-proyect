@@ -2,11 +2,11 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import Warning from "./Warning.vue";
-import jwtDecode from "jwt-decode";
+
 export default {
   name: "AddTask",
-  emits: ["confirm"],
-  setup() {
+  emits: ["reloadTask"],
+  setup(_, { emit }) {
     const d = document;
     const emergencys = ref([]);
     const task_name = ref(""),
@@ -41,7 +41,7 @@ export default {
 
       const newTask = {
         task_name: this.task_name,
-        emergency_id: emergency_id,
+        emergency_id: parseInt(emergency_id),
         requirements: temp,
         volunteers_required: this.volunteers_required,
         description: this.description_task,
@@ -52,17 +52,16 @@ export default {
         "Bearer " + localStorage.getItem("token");
       if (token) {
         axios
-          .post("http://localhost:8080/task", newTask)
+          .post("http://localhost:8080/emergency_task/specialPost", newTask)
           .then(() => {
-            showError(1);
             close();
+            emit("reloadTask");
           })
           .catch(() => {
-            showError(0);
+            // console.log("Error");
             close();
           });
       } else {
-        showError(2);
         close();
       }
     }
@@ -77,7 +76,9 @@ export default {
           .then((res) => {
             emergencys.value = res.data;
           })
-          .catch(); //error
+          .catch((e) => {
+            console.log(e);
+          }); //error
       }
     }
 
@@ -87,11 +88,13 @@ export default {
         "Bearer " + localStorage.getItem("token");
       if (token) {
         axios
-          .get("http://localhost:8080/emergency/get_request_names")
+          .get("http://localhost:8080/request/get_request_names")
           .then((res) => {
             requirements.value = res.data;
           })
-          .catch(); //error
+          .catch((e) => {
+            console.log(e);
+          }); //error
       }
     }
     onMounted(() => {
@@ -127,7 +130,7 @@ export default {
       <p>Seleccione una emergencia</p>
       <select id="emergency" size="1" v-model="emergency">
         <option v-for="emergency in this.emergencys">
-          ID: {{ emergency.id_emergency }} - {{ emergency.emergnecy_name }}
+          ID: {{ emergency.id_emergency }} - {{ emergency.emergency_name }}
         </option>
       </select>
       <p>Nombre</p>
@@ -135,10 +138,10 @@ export default {
       <p>Seleccione los requisitos nescesarios</p>
       <div class="requirementsBox">
         <div class="requirements" v-for="requirement in this.requirements">
-          <label>{{ requirement.request }}</label>
+          <label>{{ requirement.request_name }}</label>
           <input
             type="checkbox"
-            :value="requirement.requirement_id"
+            :value="requirement.id_request"
             v-model="requirementsSelected"
           />
         </div>
