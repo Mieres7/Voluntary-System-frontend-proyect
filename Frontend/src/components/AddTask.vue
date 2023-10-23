@@ -82,7 +82,7 @@ export default {
       const token = localStorage.getItem("token");
       if (token) {
         axios
-          .get("api/request/get_request_names")
+          .get("/api/request/get_request_names")
           .then((res) => {
             requirements.value = res.data;
           })

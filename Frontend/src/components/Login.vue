@@ -62,7 +62,7 @@ export default {
       };
       // Solicitud POST al servidor para autenticar al usuario
       axios
-        .post("api/auth/login", credentials)
+        .post("/api/auth/login", credentials)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           axios.defaults.headers.common["Authorization"] =
@@ -82,7 +82,7 @@ export default {
       };
       // Solicitud POST al servidor para autenticar al usuario
       axios
-        .post("api/auth/register", credentials)
+        .post("http://localhost:8080/auth/register", credentials)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           axios.defaults.headers.common["Authorization"] =
