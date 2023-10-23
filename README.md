@@ -27,3 +27,5 @@ npm run dev
 ```sh
 npm run build
 ```
+
+Developed by @[Mieres7](https://github.com/Mieres7)**
