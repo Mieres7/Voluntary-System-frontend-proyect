@@ -55,6 +55,7 @@ export default {
 
     function getVolunteers(taskId) {
       const token = localStorage.getItem("token");
+
       if (token) {
         axios
           .get("api/users_task_participation/" + taskId)
