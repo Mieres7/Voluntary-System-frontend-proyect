@@ -28,4 +28,4 @@ npm run dev
 npm run build
 ```
 
-Developed by @[Mieres7](https://github.com/Mieres7)**
+Developed by @[Mieres7](https://github.com/Mieres7)
