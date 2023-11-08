@@ -271,7 +271,7 @@
   display: flex;
   align-items: center;
   padding: 10px;
-  justify-content:space-between;
+  /* justify-content:space-between; */
 }
 .tasks {
   grid-area: tasks;
@@ -443,7 +443,7 @@ label[for="nav-toggle"] {
   width: calc(100% - 16px);
   height: 54px;
 
-  background: #11303d;
+  background: linear-gradient(150deg, #00a2bb, #205a72, #11303d);
   background-attachment: fixed;
   border-radius: 0 16px 16px 0;
   transition: top 0.2s;
@@ -457,11 +457,12 @@ label[for="nav-toggle"] {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  box-shadow: -16px 16px #11303d;
+  box-shadow: -16px 16px #0196ad;
+  
 }
 #nav-content-highlight:after {
   top: 100%;
-  box-shadow: -16px -16px #11303d;
+  box-shadow: -16px -16px #018093;
 }
 
 .nav-button {
@@ -471,8 +472,6 @@ label[for="nav-toggle"] {
   display: flex;
   align-items: center;
   color: #3c3e3f;
-  /* color: #11303d;
-  color: black; */
   direction: ltr;
   cursor: pointer;
   z-index: 1;
@@ -647,6 +646,7 @@ label[for="nav-toggle"] {
 /* AddTask */
 .button {
   padding: 15px 50px;
+  width: 200px;
   border: none;
   border-radius: 10px;
   margin-right: 20px;
@@ -988,4 +988,52 @@ h2 {
   all: initial;
   font-family: "Quicksand", sans-serif;
   font-size: 2rem;
+}
+
+
+/* Map */
+
+.emergencyLabel {
+  font-family: "Quicksand", sans-serif;
+  font-size: 1.1rem;
+  
+}
+
+.button-select {
+  padding: 15px 10px;
+  width: 200px;
+  border: none;
+  border-radius: 10px;
+  margin-right: 20px;
+  margin-left: 20px;
+  font-family: "Quicksand", sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  z-index: 0; 
+}
+
+.map-container {
+  display: grid;
+  grid-template-rows: 10% 90%;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "filters"
+    "map";
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  z-index: 1.1;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  border: 1px solid #fff;
+}
+
+.map{
+  grid-area: map;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+
 }

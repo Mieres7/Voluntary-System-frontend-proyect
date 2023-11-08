@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import TaskView from '../views/TasksView.vue'
 import interactiveView from '../views/InteractiveView.vue'
+import EmergencysMapView from '../views/EmergencysMapView.vue'
 import jwtDecode from "jwt-decode";
 
 
@@ -22,7 +23,13 @@ const router = createRouter({
       path: '/interactive',
       name: 'interactive',
       component: interactiveView
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: EmergencysMapView
     }
+
      
   ]
 })

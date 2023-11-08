@@ -60,6 +60,10 @@ export default {
       <div class="nav-button" @click="gotoInteractive">
         <i class="fas fa-fire"></i><span>Vista Interativa</span>
       </div>
+      <div class="nav-button" @click="">
+        <i class="fas fa-solid fa-map-location-dot"></i
+        ><span>Mapa Emergencias</span>
+      </div>
       <div id="nav-content-highlight"></div>
     </div>
   </div>
