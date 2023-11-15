@@ -18,7 +18,9 @@ import ProfileLogo from "../components/ProfileLogo.vue";
       <SearchBar />
       <ProfileLogo />
     </div>
-    <div class="cards"><MapContainer /></div>
+    <div class="cards">
+      <MapContainer />
+    </div>
     <div class="sidebar-r">
       <i class="fa-solid fa-gear fa-xl" style="color: #cecece"></i>
     </div>

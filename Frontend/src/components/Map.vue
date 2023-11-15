@@ -1,19 +1,46 @@
 <script>
-import Mapboxgl from "mapbox-gl";
+import mapboxgl from "mapbox-gl";
+import { onMounted, ref } from "vue";
 
 export default {
   name: "Map",
   setup() {
     const initMap = () => {
-      const map = new Mapboxgl.Map({
+      const map = new mapboxgl.Map({
         container: "map", // container ID
         style: "mapbox://styles/mapbox/streets-v12", // style URL
-        center: [-74.5, 40], // starting position [lng, lat]
-        zoom: 9, // starting zoom
+        center: [-70.682766, -33.448942], // starting position [lng, lat]
+        zoom: 15, // starting zoom
       });
+
+      return map;
+    };
+    const location = ref({
+      lat: null,
+      lng: null,
+    });
+    const getLocation = () => {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            location.value.lat = position.coords.latitude;
+            location.value.lng = position.coords.longitude;
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
+      } else {
+        console.log("Geolocalización no está disponible en tu navegador.");
+      }
     };
 
-    return { initMap, map };
+    onMounted(() => {
+      initMap();
+      getLocation();
+    });
+
+    return { initMap, getLocation, location };
   },
 };
 </script>
