@@ -34,30 +34,30 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
+// router.beforeEach((to, from, next) => {
+//   const token = localStorage.getItem('token');
   
-  if (token) {
-    const decodedToken = jwtDecode(token);
-    const tokenExpireTime = decodedToken.exp;
-    const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+//   if (token) {
+//     const decodedToken = jwtDecode(token);
+//     const tokenExpireTime = decodedToken.exp;
+//     const currentTimeInSeconds = Math.floor(Date.now() / 1000);
 
-    if (to.matched.some(record => record.meta.requiresAuth) && (tokenExpireTime < currentTimeInSeconds)) {
-      if (to.path !== '/') {
-        next('/');
-      } else {
-        next();
-      }
-    } else {
-      next();
-    }
-  } else {
-    if (to.path !== '/') {
-      next('/');
-    } else {
-      next();
-    }
-  }
-});
+//     if (to.matched.some(record => record.meta.requiresAuth) && (tokenExpireTime < currentTimeInSeconds)) {
+//       if (to.path !== '/') {
+//         next('/');
+//       } else {
+//         next();
+//       }
+//     } else {
+//       next();
+//     }
+//   } else {
+//     if (to.path !== '/') {
+//       next('/');
+//     } else {
+//       next();
+//     }
+//   }
+// });
 
 export default router
