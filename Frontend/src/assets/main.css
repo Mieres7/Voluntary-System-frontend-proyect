@@ -443,7 +443,7 @@ label[for="nav-toggle"] {
   width: calc(100% - 16px);
   height: 54px;
 
-  background: linear-gradient(150deg, #00a2bb, #205a72, #11303d);
+  background: #018093;
   background-attachment: fixed;
   border-radius: 0 16px 16px 0;
   transition: top 0.2s;
@@ -457,7 +457,7 @@ label[for="nav-toggle"] {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  box-shadow: -16px 16px #0196ad;
+  box-shadow: -16px 16px #018093;
   
 }
 #nav-content-highlight:after {

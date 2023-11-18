@@ -6,27 +6,30 @@ export default {
   name: "MapContainer",
   setup() {
     const emergencys = ref([
-        {
-          emergency_name: "nombreDeEjemplo",
-          id_emergency: "20",
-          geom: { lng: -38.57434144039071, lat: -72.4756987329032 },
-        },
-        {},
-        {},
-        {},
-        {},
+        // {
+        //   emergency_name: "nombreDeEjemplo",
+        //   id_emergency: "20",
+        //   longitude: -38.57434144039071,
+        //   latitude: -72.4756987329032,
+        // },
+        // {},
+        // {},
+        // {},
+        // {},
       ]),
       volunteers = ref([
-        {
-          first_name: "Pedro",
-          last_name: "Herrera",
-          geom: { lng: -32.993457378637764, lat: -71.53361941561872 },
-        },
-        {
-          first_name: "Juan",
-          last_name: "Salazar",
-          geom: { lng: -39.41955618986563, lat: -71.93942618853083 },
-        },
+        // {
+        //   first_name: "Pedro",
+        //   first_lastname: "Herrera",
+        //   longitude: -32.993457378637764,
+        //   latitude: -71.53361941561872,
+        // },
+        // {
+        //   first_name: "Juan",
+        //   first_lastname: "Salazar",
+        //   longitude: -39.41955618986563,
+        //   latitude: -71.93942618853083,
+        // },
       ]),
       options = {
         enableHighAccuracy: true,
@@ -86,25 +89,27 @@ export default {
         markers.value = [];
       }
 
-      // const token = localStorage.getItem("token");
-      // if (token) {
-      //   await axios
-      //     .get("api/ruta" + emergencys.value[index].id_emergency)
-      //     .then((res) => {
-      //       volunteers.value = res.data;
-      //     })
-      //     .catch((e) => {
-      //       console.log(e);
-      //     });
-      // }
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios
+          .get("api/getVolunteers/" + emergencys.value[index].id_emergency)
+          .then((res) => {
+            volunteers.value = res.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
 
       volunteers.value.forEach((vol) => {
         const popup = new mapboxgl.Popup()
-          .setLngLat([vol.geom.lat, vol.geom.lng])
-          .setHTML(`<h4>Voluntario: ${vol.first_name} ${vol.last_name} <h4>`);
+          .setLngLat([vol.latitude, vol.longitude])
+          .setHTML(
+            `<h4>Voluntario: ${vol.first_name} ${vol.first_lastname} <h4>`
+          );
 
         const marker = new mapboxgl.Marker({ color: "#ff8300" })
-          .setLngLat([vol.geom.lat, vol.geom.lng])
+          .setLngLat([vol.latitude, vol.longitude])
           .setPopup(popup)
           .addTo(map.value);
 
@@ -113,8 +118,8 @@ export default {
 
       const popupE = new mapboxgl.Popup()
         .setLngLat([
-          emergencys.value[index].geom.lat,
-          emergencys.value[index].geom.lng,
+          emergencys.value[index].latitude,
+          emergencys.value[index].longitude,
         ])
         .setHTML(
           `<h4>Emergencia: ${emergencys.value[index].emergency_name} <h4>`
@@ -122,8 +127,8 @@ export default {
 
       const markerE = new mapboxgl.Marker({ color: "#ff0020" })
         .setLngLat([
-          emergencys.value[index].geom.lat,
-          emergencys.value[index].geom.lng,
+          emergencys.value[index].latitude,
+          emergencys.value[index].longitude,
         ])
         .setPopup(popupE)
         .addTo(map.value);
@@ -131,27 +136,30 @@ export default {
       markers.value.push(markerE);
     }
 
-    // const getEmergencys = async () => {
-    //   try {
-    //     const token = localStorage.getItem("token");
-    //     if (token) {
-    //       await axios
-    //         .get("api/ruta")
-    //         .then((res) => {
-    //           emergencys.value = res.data;
-    //         })
-    //         .catch((e) => {
-    //           console.log(e);
-    //         });
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
+    const getEmergencys = () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+          // axios.defaults.headers.common["Authorization"] =
+          //   "Bearer " + localStorage.getItem("token");
+          axios
+            .get("api/emergency/getEmergenciesAddresses")
+            .then((res) => {
+              emergencys.value = res.data;
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     onMounted(async () => {
       await getLocation();
-      // await getEmergencys();
+      getEmergencys();
       initMap();
     });
 
@@ -159,7 +167,7 @@ export default {
       initMap,
       getLocation,
       getVolunteers,
-      // getEmergencys,
+      getEmergencys,
       markers,
       map,
       location,

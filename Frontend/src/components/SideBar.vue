@@ -22,7 +22,11 @@ export default {
     function gotoInteractive() {
       router.push("/interactive");
     }
-    return { showError, gotoTask, gotoInteractive, show };
+
+    function gotoMap() {
+      router.push("/map");
+    }
+    return { showError, gotoTask, gotoInteractive, gotoMap, show };
   },
 };
 </script>
@@ -60,7 +64,7 @@ export default {
       <div class="nav-button" @click="gotoInteractive">
         <i class="fas fa-fire"></i><span>Vista Interativa</span>
       </div>
-      <div class="nav-button" @click="">
+      <div class="nav-button" @click="gotoMap">
         <i class="fas fa-solid fa-map-location-dot"></i
         ><span>Mapa Emergencias</span>
       </div>
