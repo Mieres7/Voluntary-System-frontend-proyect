@@ -141,8 +141,6 @@ export default {
         const token = localStorage.getItem("token");
 
         if (token) {
-          // axios.defaults.headers.common["Authorization"] =
-          //   "Bearer " + localStorage.getItem("token");
           axios
             .get("api/emergency/getEmergenciesAddresses")
             .then((res) => {
