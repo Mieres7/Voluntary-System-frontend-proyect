@@ -81,6 +81,11 @@ export default {
       }
     };
 
+    const handleEmergencyChange = (event) => {
+      const selectedIndex = event.target.options.selectedIndex;
+      getVolunteers(selectedIndex);
+    };
+
     async function getVolunteers(index) {
       if (markers) {
         markers.value.forEach((marker) => {
@@ -134,6 +139,10 @@ export default {
         .addTo(map.value);
 
       markers.value.push(markerE);
+
+      // markers.value.forEach((e) => {
+      //   console.log("hola");
+      // });
     }
 
     const getEmergencys = () => {
@@ -166,6 +175,7 @@ export default {
       getLocation,
       getVolunteers,
       getEmergencys,
+      handleEmergencyChange,
       markers,
       map,
       location,
@@ -182,12 +192,15 @@ export default {
       <label for="emergencySelect" class="emergencyLabel"
         >Seleccione una emergencia:
       </label>
-      <select class="button-select" id="emergencySelect">
+      <select
+        class="button-select"
+        id="emergencySelect"
+        @change="handleEmergencyChange"
+      >
         <option
           v-for="(e, index) in this.emergencys"
           :key="index"
           :value="e.id_emergency"
-          @click="getVolunteers(index)"
         >
           {{ index }}. {{ e.emergency_name }}
         </option>
